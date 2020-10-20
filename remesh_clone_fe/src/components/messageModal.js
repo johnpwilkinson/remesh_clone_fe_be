@@ -15,7 +15,7 @@ function MessageModal(props) {
   return (
     <Modal show={props.isOpenMessage} onHide={props.hideModal}>
       <Modal.Header>
-        <Modal.Title>New Message</Modal.Title>
+        <Modal.Title>New Message for {props.activeConvo}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={props.handleMessageFormSubmit}>

@@ -13,16 +13,21 @@ import {
   Nav,
   NavDropdown,
   FormControl,
+  ListGroup
 } from "react-bootstrap";
-import ConvoDetails from "./ConvoDetails";
+import moment from 'moment'
 
 function Thoughts(props) {
   return props.thoughts.map((thought) => (
-    <div key={thought.id}>
-      {thought.thought}
+    <Card style={{ width: '20rem' }} key={thought.id} className="mx-auto" key={thought.id}>
+    <ListGroup variant="flush">
+    <ListGroup.Item>
+      <h5>{thought.thought}</h5>
       <br></br>
-      {thought.submission_time}
-    </div>
+      <p>Submitted on:{moment(thought.submission_time).add(365, 'day').format('LL')}</p>
+    </ListGroup.Item>
+    </ListGroup>
+    </Card>
   ))
 
 }

@@ -15,7 +15,7 @@ function ThoughtModal(props) {
   return (
     <Modal show={props.isOpenThought} onHide={props.hideModal}>
       <Modal.Header>
-        <Modal.Title>New Thought</Modal.Title>
+        <Modal.Title>New Thought for {props.activeConvo} / {props.activeMess}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={props.handleThoughtFormSubmit}>

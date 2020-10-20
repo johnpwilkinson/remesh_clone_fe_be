@@ -14,29 +14,24 @@ import {
   NavDropdown,
   FormControl,
 } from "react-bootstrap";
-import ConvoDetails from "./ConvoDetails";
+import moment from 'moment'
 
 function Convos(props) {
   return props.filteredConvos.map((convo) => (
     <Card style={{ width: "18rem", margin: "40px" }}>
-      <Card.Img variant="top" src="intro1.jpg" />
-      <Card.Body>
-        <Card.Title>
-          <a
-            href="#"
-            onClick={() => {
-              props.getConvoDetail(convo.id, convo.title);
-            }}
-          >
-            <h1>{convo.title}</h1>
-          </a>
-        </Card.Title>
-        <Card.Text>
-          <h3>{convo.start_date}</h3>
-          <p>{convo.id}</p>
-        </Card.Text>
+      <Card.Body class="cardBody">
+        <a
+          href="#"
+          onClick={() => {
+            props.getConvoDetail(convo.id, convo.title);
+          }}
+        >
+          <h1 className="ml-2">{convo.title}</h1>
+        </a>
+        <p className="text-right pr-2">Start Date: {moment(convo.start_date).add(365, 'day').format('LL')}</p>
       </Card.Body>
     </Card>
   ));
+
 }
 export default Convos;

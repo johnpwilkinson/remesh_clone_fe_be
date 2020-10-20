@@ -13,25 +13,29 @@ import {
   Nav,
   NavDropdown,
   FormControl,
+  ListGroup
 } from "react-bootstrap";
 import ConvoDetails from "./ConvoDetails";
-
+import moment from 'moment'
 function Messages(props) {
-  return props.messages.map((mess) => (
-    <div key={mess.id}>
+  return (
+  props.messages.map((mess) => (
+    <Card style={{ width: '20rem' }} key={mess.id} className="mx-auto">
+    <ListGroup variant="flush">
+    <ListGroup.Item>
       <a
         href="#"
         onClick={() => {
           props.getMessageDetail(mess.id, mess.message);
         }}
       >
-        {mess.message}
+        <h5>{mess.message}</h5>
       </a>
-      <br></br>
-      {mess.submission_time}
-      <br></br>
-      {mess.id}
-    </div>
-  ));
+      <p>Submitted on:{moment(mess.submission_time).add(365, 'day').format('LL')}</p>
+      </ListGroup.Item>
+      </ListGroup>
+    </Card>
+  )))
 }
 export default Messages;
+

@@ -1,22 +1,16 @@
-import React from "react";
-import axios from "axios";
-import {
-    Container,
-    Row,
-    Col,
-    Card,
-    Modal,
-    Form,
-    Button,
-    InputGroup,
-    Navbar,
-    Nav,
-    NavDropdown,
-    FormControl
-  } from "react-bootstrap";
+import React, { Component } from 'react';
+import Carousel from 'react-elastic-carousel';
+ 
+class Car extends Component {
 
-function ConvosDetails(props) {
-  
-
+  render () {
+    return (
+      <Carousel>
+        {this.props.filteredConvos.items.map(item => <div key={item.id}>{item.title}</div>)}
+      </Carousel>
+    )
+  }
 }
-export default ConvosDetails;
+
+export default Car
+

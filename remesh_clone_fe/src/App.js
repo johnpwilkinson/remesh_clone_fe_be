@@ -26,8 +26,8 @@ import ThoughtModal from "./components/ThoughtsModal";
 import Messages from "./components/Messages";
 import Thoughts from "./components/Thoughts";
 import NewMessage from "./components/newMessage";
-import NewThought from './components/newThought'
-
+import NewThought from "./components/newThought";
+import NewConvo from "./components/newConversation"
 
 class App extends React.Component {
   constructor(props) {
@@ -47,6 +47,7 @@ class App extends React.Component {
       currConvoId: 0,
       currMessageId: 0,
       search: "",
+      activeConvo:""
     };
   }
 
@@ -177,7 +178,7 @@ class App extends React.Component {
       conversation: conversation,
       isOpenMessage: false,
     });
-    axios.get("http://localhost:8000/api/messages/").then((response) => {
+    axios.get(`http://localhost:8000/api/messages/${conversation}`).then((response) => {
       const messages = response.data;
       this.setState({ messages });
     });
@@ -193,7 +194,7 @@ class App extends React.Component {
       message: message,
       isOpenThought: false,
     });
-    axios.get("http://localhost:8000/api/thoughts/").then((response) => {
+    axios.get(`http://localhost:8000/api/thoughts/${message}`).then((response) => {
       const thoughts = response.data;
       this.setState({ thoughts });
     });
@@ -225,28 +226,27 @@ class App extends React.Component {
     });
     return (
       <Container fluid>
-        <NaviBar search={this.state.search} updateSearch={this.updateSearch} />
+        <NaviBar search={this.state.search} updateSearch={this.updateSearch}  />
         <Container fluid>
+
           <Row>
-            <a href="#" onClick={this.showConvoModal}>
-              <h1>New Conversation</h1>
-            </a>
-          </Row>
-          <Row>
-            {this.state.isCreateConvo && <div>ffff</div>}
             <Col sm={4}>
+              <NewConvo messages={this.state.conversations} showConvoModal={this.showConvoModal} />
               <Convos
                 filteredConvos={filteredConvos}
                 getConvoDetail={this.getConvoDetail}
               />
             </Col>
             <Col sm={4}>
+              {this.state.isMessages && (
+                <NewMessage
+                  activeConvo={this.state.activeConvo}
+                  showMessageModal={this.showMessageModal}
+                  messages={this.state.messages}
+                />
+              )}
               {this.state.messages.length > 0 && (
                 <div>
-                  <NewMessage
-                    activeConvo={this.state.activeConvo}
-                    showMessageModal={this.showMessageModal}
-                  />
                   <Messages
                     messages={this.state.messages}
                     getMessageDetail={this.getMessageDetail}
@@ -255,10 +255,16 @@ class App extends React.Component {
               )}
             </Col>
             <Col sm={4}>
-              {this.state.thoughts.length > 0  && (
+              {this.state.isThoughts && (
+              <NewThought
+                activeMess={this.state.activeMess}
+                showThoughtModal={this.showThoughtModal}
+                thoughts={this.state.thoughts}
+                activeConvo={this.state.activeConvo}
+              />
+              )}
+              {this.state.thoughts.length > 0 && (
                 <div>
-                 
-                  <NewThought activeMess={this.state.activeMess} showThoughtModal={this.showThoughtModal}/>
                   <Thoughts thoughts={this.state.thoughts} />
                 </div>
               )}

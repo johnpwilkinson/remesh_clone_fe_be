@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+.remeshBlue {
+  background-color: #0073E3;
+  font: Arial;
+}
+.remeshLogo {
+  font-size: 3em;
+  font-weight: bolder;
+  color: white;
+}
+.remeshSearch {
+  color: white
+}
+
+.cardBody {
+  background-image: url("intro1.jpg");
+  background-size: cover;
+  color: white
+
+}
+
+.cardBody a {color:white;}         /* Unvisited link  */
+.cardBody a:visited {color:white;} /* Visited link    */
+.cardBody a:hover {color:white;}   /* Mouse over link */
+.cardBody a:active {color:white;}  /* Selected link   */

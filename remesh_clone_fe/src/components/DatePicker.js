@@ -11,6 +11,7 @@ function DatePickerComponent (props) {
             onChange={date => setSelectedDate(date)}
             dateFormat="yyyy-MM-dd"
             name={props.name}
+            placeholderText="Click to select a date"
             />
         </div>
     )

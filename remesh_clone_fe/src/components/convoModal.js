@@ -21,8 +21,9 @@ function ConvoModal(props) {
       <Modal.Body>
         <Form onSubmit={props.handleFormSubmit}>
           <Form.Group controlId="exampleForm.ControlTextarea1">
-            <Form.Label>Title</Form.Label>
+            <Form.Label>Conversation Title</Form.Label>
             <Form.Control as="textarea" rows="1" maxLength="100" name="title" />
+            <Form.Label>Select a Start Date</Form.Label>
             <DatePickerComponent name="date" />
           </Form.Group>
           <Button variant="primary" type="submit">

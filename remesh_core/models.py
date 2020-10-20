@@ -25,4 +25,4 @@ class Thought(models.Model):
     message = models.ForeignKey(Message, related_name='on_message', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.thoughts + " on " + str(self.message)
+        return self.thought + " on " + str(self.message)
