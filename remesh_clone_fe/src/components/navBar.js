@@ -6,7 +6,6 @@ import {
   FormControl,
   Button,
 } from "react-bootstrap";
-import ConvoDetail from './Convos'
 import React from "react";
 function NaviBar(props) {
 

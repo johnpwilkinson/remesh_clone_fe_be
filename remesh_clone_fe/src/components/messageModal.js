@@ -1,15 +1,5 @@
 import React from "react";
-import {
-    Container,
-    Row,
-    Col,
-    Card,
-    Modal,
-    Form,
-    Button,
-    InputGroup,
-  } from "react-bootstrap";
-
+import { Modal, Form, Button } from "react-bootstrap";
 
 function MessageModal(props) {
   return (
@@ -21,7 +11,12 @@ function MessageModal(props) {
         <Form onSubmit={props.handleMessageFormSubmit}>
           <Form.Group controlId="exampleForm.ControlTextarea1">
             <Form.Label>Message</Form.Label>
-            <Form.Control as="textarea" rows="1" maxLength="100" name="message" />
+            <Form.Control
+              as="textarea"
+              rows="1"
+              maxLength="100"
+              name="message"
+            />
           </Form.Group>
           <Button variant="primary" type="submit">
             Submit
@@ -32,4 +27,4 @@ function MessageModal(props) {
   );
 }
 
-export default MessageModal
+export default MessageModal;

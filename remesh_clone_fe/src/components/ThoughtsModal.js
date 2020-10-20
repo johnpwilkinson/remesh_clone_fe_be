@@ -1,13 +1,8 @@
 import React from "react";
 import {
-    Container,
-    Row,
-    Col,
-    Card,
     Modal,
     Form,
     Button,
-    InputGroup,
   } from "react-bootstrap";
 
 

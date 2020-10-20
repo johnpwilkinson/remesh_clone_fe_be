@@ -1,20 +1,5 @@
 import React from "react";
-import axios from "axios";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Modal,
-  Form,
-  Button,
-  InputGroup,
-  Navbar,
-  Nav,
-  NavDropdown,
-  FormControl,
-} from "react-bootstrap";
-import ConvoDetails from "./ConvoDetails";
+
 
 function NewConvo(props) {
   if (props.messages.length > 0) {

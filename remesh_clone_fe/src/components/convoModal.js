@@ -1,16 +1,7 @@
 import React from "react";
-import {
-    Container,
-    Row,
-    Col,
-    Card,
-    Modal,
-    Form,
-    Button,
-    InputGroup,
-  } from "react-bootstrap";
+import { Modal, Form, Button } from "react-bootstrap";
 
-import DatePickerComponent from './DatePicker'
+import DatePickerComponent from "./DatePicker";
 
 function ConvoModal(props) {
   return (
@@ -35,4 +26,4 @@ function ConvoModal(props) {
   );
 }
 
-export default ConvoModal
+export default ConvoModal;

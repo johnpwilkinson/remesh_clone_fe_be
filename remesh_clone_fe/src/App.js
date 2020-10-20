@@ -7,18 +7,7 @@ import {
   Container,
   Row,
   Col,
-  Card,
-  Modal,
-  Form,
-  Button,
-  InputGroup,
-  Navbar,
-  Nav,
-  NavDropdown,
-  FormControl,
 } from "react-bootstrap";
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
-import DatePickerComponent from "./components/DatePicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ConvoModal from "./components/convoModal";
 import MessageModal from "./components/messageModal";
@@ -57,11 +46,7 @@ class App extends React.Component {
       this.setState({ conversations });
     });
   }
-  setSelectedDate = (date) => {
-    this.setState({
-      selectedDate: date,
-    });
-  };
+  
   handleFormSubmit = (event) => {
     event.preventDefault();
     const title = event.target.elements.title.value;
@@ -75,12 +60,6 @@ class App extends React.Component {
     axios.get("http://localhost:8000/api/conversations/").then((response) => {
       const conversations = response.data;
       this.setState({ conversations });
-    });
-  };
-
-  onHandleChange = (e) => {
-    this.setState({
-      message: e.target.value,
     });
   };
 
@@ -116,23 +95,6 @@ class App extends React.Component {
           currMessageId: messId,
         });
       });
-  };
-
-  handleDownVote = (postId) => {
-    axios.post(`http://localhost:8000/api/posts/${postId}/down_vote/`, {
-      pk: postId,
-    });
-    axios.get("http://localhost:8000/api/posts/").then((response) => {
-      const posts = response.data;
-      this.setState({ posts });
-    });
-  };
-
-  handleFeed = (feedName) => {
-    axios.get(`http://localhost:8000/api/${feedName}/`).then((response) => {
-      const posts = response.data;
-      this.setState({ posts });
-    });
   };
 
   toggleNewConvo = () => {

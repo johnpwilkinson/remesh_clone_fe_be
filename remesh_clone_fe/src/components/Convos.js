@@ -1,20 +1,7 @@
 import React from "react";
 import axios from "axios";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Modal,
-  Form,
-  Button,
-  InputGroup,
-  Navbar,
-  Nav,
-  NavDropdown,
-  FormControl,
-} from "react-bootstrap";
-import moment from 'moment'
+import { Card } from "react-bootstrap";
+import moment from "moment";
 
 function Convos(props) {
   return props.filteredConvos.map((convo) => (
@@ -28,10 +15,11 @@ function Convos(props) {
         >
           <h1 className="ml-2">{convo.title}</h1>
         </a>
-        <p className="text-right pr-2">Start Date: {moment(convo.start_date).add(365, 'day').format('LL')}</p>
+        <p className="text-right pr-2">
+          Start Date: {moment(convo.start_date).add(365, "day").format("LL")}
+        </p>
       </Card.Body>
     </Card>
   ));
-
 }
 export default Convos;
