@@ -3,11 +3,7 @@ import axios from "axios";
 import Convos from "./components/Convos";
 import NaviBar from "./components/navBar";
 import "./App.css";
-import {
-  Container,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
 import ConvoModal from "./components/convoModal";
 import MessageModal from "./components/messageModal";
@@ -16,27 +12,25 @@ import Messages from "./components/Messages";
 import Thoughts from "./components/Thoughts";
 import NewMessage from "./components/newMessage";
 import NewThought from "./components/newThought";
-import NewConvo from "./components/newConversation"
+import NewConvo from "./components/newConversation";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isCreateConvo: false,
-      isMessages: false,
-      isThoughts: false,
       conversations: [],
       messages: [],
       thoughts: [],
+      isMessages: false,
+      isThoughts: false,
       isOpenConvo: false,
       isOpenMessage: false,
       isOpenThought: false,
-      setIsOpenConvo: false,
       selectedDate: "",
       currConvoId: 0,
       currMessageId: 0,
       search: "",
-      activeConvo:""
+      activeConvo: "",
     };
   }
 
@@ -46,7 +40,36 @@ class App extends React.Component {
       this.setState({ conversations });
     });
   }
-  
+  getConvoDetail = (convoId, convoTitle) => {
+    console.log(convoId);
+    axios
+      .get(`http://localhost:8000/api/messages/${convoId}`)
+      .then((response) => {
+        const messages = response.data;
+        this.setState({
+          messages: messages,
+          activeConvo: convoTitle,
+          isMessages: true,
+          currConvoId: convoId,
+          isThoughts: false,
+          thoughts: []
+        });
+      });
+  };
+  getMessageDetail = (messId, messTitle) => {
+    console.log(messId);
+    axios
+      .get(`http://localhost:8000/api/thoughts/${messId}`)
+      .then((response) => {
+        const thoughts = response.data;
+        this.setState({
+          thoughts: thoughts,
+          activeMess: messTitle,
+          isThoughts: true,
+          currMessageId: messId,
+        });
+      });
+  };
   handleFormSubmit = (event) => {
     event.preventDefault();
     const title = event.target.elements.title.value;
@@ -62,59 +85,62 @@ class App extends React.Component {
       this.setState({ conversations });
     });
   };
-
-  getConvoDetail = (convoId, convoTitle) => {
-    console.log(convoId);
-    // console.log(event)
-    // event.preventDefault();
+  handleMessageFormSubmit = (event) => {
+    event.preventDefault();
+    console.log(event.target);
+    const message = event.target.elements.message.value;
+    const conversation = this.state.currConvoId;
+    axios.post("http://localhost:8000/api/messages/", {
+      message: message,
+      conversation: conversation,
+      isOpenMessage: false,
+    });
     axios
-      .get(`http://localhost:8000/api/messages/${convoId}`)
+      .get(`http://localhost:8000/api/messages/${conversation}`)
       .then((response) => {
         const messages = response.data;
-        this.setState({
-          messages: messages,
-          activeConvo: convoTitle,
-          isMessages: true,
-          currConvoId: convoId,
-        });
+        this.setState({ messages });
       });
   };
 
-  getMessageDetail = (messId, messTitle) => {
-    console.log(messId);
-    // console.log(event)
-    // event.preventDefault();
+  handleThoughtFormSubmit = (event) => {
+    event.preventDefault();
+    console.log(event.target);
+    const thought = event.target.elements.thought.value;
+    const message = this.state.currMessageId;
+    axios.post("http://localhost:8000/api/thoughts/", {
+      thought: thought,
+      message: message,
+      isOpenThought: false,
+    });
     axios
-      .get(`http://localhost:8000/api/thoughts/${messId}`)
+      .get(`http://localhost:8000/api/thoughts/${message}`)
       .then((response) => {
         const thoughts = response.data;
+        this.setState({ thoughts });
+      });
+  };
+  showModal = (e) => {
+    console.log(e.target.id)
+    switch(e.target.id){
+      case 'convo':
         this.setState({
-          thoughts: thoughts,
-          activeMess: messTitle,
-          isThoughts: true,
-          currMessageId: messId,
+          isOpenConvo: true,
         });
-      });
-  };
-
-  toggleNewConvo = () => {
-    if (this.state.isCreateConvo) {
-      this.setState({
-        isCreateConvo: false,
-      });
-    } else {
-      this.setState({
-        isCreateConvo: true,
-      });
+        break;
+      case 'message':
+        this.setState({
+          isOpenMessage: true,
+        });
+        break;
+      case 'thought':
+        this.setState({
+          isOpenThought: true,
+        });
+        break;
     }
-  };
-
-  showConvoModal = () => {
-    this.setState({
-      isOpenConvo: true,
-    });
-  };
-  hideModal = () => {
+  }
+  hideConvoModal = () => {
     this.setState({
       isOpenConvo: false,
     });
@@ -130,49 +156,6 @@ class App extends React.Component {
     });
   };
 
-  handleMessageFormSubmit = (event) => {
-    event.preventDefault();
-    console.log(event.target);
-    const message = event.target.elements.message.value;
-    const conversation = this.state.currConvoId;
-    axios.post("http://localhost:8000/api/messages/", {
-      message: message,
-      conversation: conversation,
-      isOpenMessage: false,
-    });
-    axios.get(`http://localhost:8000/api/messages/${conversation}`).then((response) => {
-      const messages = response.data;
-      this.setState({ messages });
-    });
-  };
-
-  handleThoughtFormSubmit = (event) => {
-    event.preventDefault();
-    console.log(event.target);
-    const thought = event.target.elements.thought.value;
-    const message = this.state.currMessageId;
-    axios.post("http://localhost:8000/api/thoughts/", {
-      thought: thought,
-      message: message,
-      isOpenThought: false,
-    });
-    axios.get(`http://localhost:8000/api/thoughts/${message}`).then((response) => {
-      const thoughts = response.data;
-      this.setState({ thoughts });
-    });
-  };
-
-  showMessageModal = () => {
-    this.setState({
-      isOpenMessage: true,
-    });
-  };
-
-  showThoughtModal = () => {
-    this.setState({
-      isOpenThought: true,
-    });
-  };
 
   updateSearch = (event) => {
     this.setState({
@@ -188,12 +171,14 @@ class App extends React.Component {
     });
     return (
       <Container fluid>
-        <NaviBar search={this.state.search} updateSearch={this.updateSearch}  />
+        <NaviBar search={this.state.search} updateSearch={this.updateSearch} />
         <Container fluid>
-
           <Row>
             <Col sm={4}>
-              <NewConvo messages={this.state.conversations} showConvoModal={this.showConvoModal} />
+              <NewConvo
+                messages={this.state.conversations}
+                showConvoModal={this.showModal}
+              />
               <Convos
                 filteredConvos={filteredConvos}
                 getConvoDetail={this.getConvoDetail}
@@ -203,7 +188,7 @@ class App extends React.Component {
               {this.state.isMessages && (
                 <NewMessage
                   activeConvo={this.state.activeConvo}
-                  showMessageModal={this.showMessageModal}
+                  showMessageModal={this.showModal}
                   messages={this.state.messages}
                 />
               )}
@@ -218,12 +203,12 @@ class App extends React.Component {
             </Col>
             <Col sm={4}>
               {this.state.isThoughts && (
-              <NewThought
-                activeMess={this.state.activeMess}
-                showThoughtModal={this.showThoughtModal}
-                thoughts={this.state.thoughts}
-                activeConvo={this.state.activeConvo}
-              />
+                <NewThought
+                  activeMess={this.state.activeMess}
+                  showThoughtModal={this.showModal}
+                  thoughts={this.state.thoughts}
+                  activeConvo={this.state.activeConvo}
+                />
               )}
               {this.state.thoughts.length > 0 && (
                 <div>
@@ -235,7 +220,7 @@ class App extends React.Component {
               {...this.state}
               handleFormSubmit={this.handleFormSubmit}
               showConvoModal={this.showConvoModal}
-              hideModal={this.hideModal}
+              hideModal={this.hideConvoModal}
             />
             <MessageModal
               {...this.state}

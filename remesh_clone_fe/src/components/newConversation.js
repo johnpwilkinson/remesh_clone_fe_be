@@ -6,7 +6,7 @@ function NewConvo(props) {
     return (
       <div className="text-center" className="mt-2" >
         <a href="#" onClick={props.showConvoModal}>
-          <h3>Create New Conversation</h3>
+          <h3 id="convo">Create New Conversation</h3>
         </a>
       </div>
     );
@@ -14,7 +14,7 @@ function NewConvo(props) {
   return (
     <div className="text-center" className="mt-2">
       <a href="#" onClick={props.showConvoModal}>
-        <h3>Create New Conversation</h3>
+        <h3 id="convo">Create New Conversation</h3>
       </a>
       <h3>No Conversations yet...</h3>
     </div>

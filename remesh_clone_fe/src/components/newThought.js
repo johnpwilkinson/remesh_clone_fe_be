@@ -6,7 +6,7 @@ function NewThought(props) {
     return (
       <div className="text-center">
         <a href="#" onClick={props.showThoughtModal}>
-    <h3>Create New Thought for {props.activeConvo} / {props.activeMess}</h3>
+    <h3 id="thought">Create New Thought for {props.activeConvo} / {props.activeMess}</h3>
         </a>
         <h5>Thoughts for {props.activeMess}</h5>
       </div>
@@ -15,7 +15,7 @@ function NewThought(props) {
   return (
     <div className="text-center">
       <a href="#" onClick={props.showThoughtModal}>
-      <h5>Create New Thought for {props.activeConvo} / {props.activeMess}</h5>
+      <h5 id="thought">Create New Thought for {props.activeConvo} / {props.activeMess}</h5>
       </a>
       <h3>No Thoughts for {props.activeMess}</h3>
     </div>

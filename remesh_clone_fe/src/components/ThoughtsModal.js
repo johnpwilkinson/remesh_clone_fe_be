@@ -23,6 +23,9 @@ function ThoughtModal(props) {
           </Button>
         </Form>
       </Modal.Body>
+      <Modal.Footer>
+        <p>Click away to Hide Modal and return to Dashboard</p>
+      </Modal.Footer>
     </Modal>
   );
 }

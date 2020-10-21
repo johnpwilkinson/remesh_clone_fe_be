@@ -7,6 +7,8 @@ import {
   Button,
 } from "react-bootstrap";
 import React from "react";
+import SearchBox from "./search";
+
 function NaviBar(props) {
 
     return (
@@ -19,8 +21,9 @@ function NaviBar(props) {
             
           </Nav>
           <Form inline>
-            <FormControl type="text" placeholder="Search Conversations" className="mr-sm-2" value={props.search} onChange={props.updateSearch} name="searchbox" />
-            <Button className="remeshSearch" variant="outline-light">Search</Button>
+            {/* <FormControl type="text" placeholder="Search Conversations" className="mr-sm-2" value={props.search} onChange={props.updateSearch} name="searchbox" />
+            <Button className="remeshSearch" variant="outline-light">Search</Button> */}
+            <SearchBox search={props.search} updateSearch={props.updateSearch} />
           </Form>
         </Navbar.Collapse>
       </Navbar>
