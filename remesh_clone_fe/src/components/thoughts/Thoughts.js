@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { Card, ListGroup } from "react-bootstrap";
 import moment from "moment";
 
@@ -12,7 +11,6 @@ function Thoughts(props) {
             style={{ width: "20rem" }}
             key={thought.id}
             className="mx-auto"
-            key={thought.id}
           >
             <ListGroup variant="flush">
               <ListGroup.Item>

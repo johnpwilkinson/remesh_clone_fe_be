@@ -1,10 +1,7 @@
 import {
   Navbar,
   Nav,
-  NavDropdown,
   Form,
-  FormControl,
-  Button,
 } from "react-bootstrap";
 import React from "react";
 import SearchBox from "../utils/search";
