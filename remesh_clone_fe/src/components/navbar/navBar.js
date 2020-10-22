@@ -7,7 +7,7 @@ import {
   Button,
 } from "react-bootstrap";
 import React from "react";
-import SearchBox from "./search";
+import SearchBox from "../utils/search";
 
 function NaviBar(props) {
 

@@ -1,18 +1,17 @@
 import React from "react";
 import axios from "axios";
-import Convos from "./components/Convos";
-import NaviBar from "./components/navBar";
+import Convos from "./components/conversations/Convos";
+import NaviBar from "./components/navbar/navBar";
 import "./App.css";
 import { Container, Row, Col } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
-import ConvoModal from "./components/convoModal";
-import MessageModal from "./components/messageModal";
-import ThoughtModal from "./components/ThoughtsModal";
-import Messages from "./components/Messages";
-import Thoughts from "./components/Thoughts";
-import NewMessage from "./components/newMessage";
-import NewThought from "./components/newThought";
-import NewConvo from "./components/newConversation";
+import ConvoModal from "./components/conversations/convoModal";
+import MessageModal from "./components/messages/messageModal";
+import ThoughtModal from "./components/thoughts/ThoughtsModal";
+import Messages from "./components/messages/Messages";
+import Thoughts from "./components/thoughts/Thoughts";
+import NewButton from "./components/utils/newButton";
+import { BASE_URL, CONVERSATIONS, MESSAGES, THOUGHTS } from './components/utils/url'
 
 class App extends React.Component {
   constructor(props) {
@@ -31,19 +30,19 @@ class App extends React.Component {
       currMessageId: 0,
       search: "",
       activeConvo: "",
+      activeMess:""
     };
   }
 
   componentDidMount() {
-    axios.get("http://localhost:8000/api/conversations/").then((response) => {
+    axios.get(BASE_URL+CONVERSATIONS).then((response) => {
       const conversations = response.data;
       this.setState({ conversations });
     });
   }
   getConvoDetail = (convoId, convoTitle) => {
-    console.log(convoId);
     axios
-      .get(`http://localhost:8000/api/messages/${convoId}`)
+      .get(BASE_URL+MESSAGES+convoId)
       .then((response) => {
         const messages = response.data;
         this.setState({
@@ -52,14 +51,13 @@ class App extends React.Component {
           isMessages: true,
           currConvoId: convoId,
           isThoughts: false,
-          thoughts: []
+          thoughts: [],
         });
       });
   };
   getMessageDetail = (messId, messTitle) => {
-    console.log(messId);
     axios
-      .get(`http://localhost:8000/api/thoughts/${messId}`)
+      .get(BASE_URL+THOUGHTS+messId)
       .then((response) => {
         const thoughts = response.data;
         this.setState({
@@ -74,29 +72,27 @@ class App extends React.Component {
     event.preventDefault();
     const title = event.target.elements.title.value;
     const start_date = event.target.elements.date.value;
-    console.log(start_date);
-    axios.post("http://localhost:8000/api/conversations/", {
+    axios.post(BASE_URL+CONVERSATIONS, {
       title: title,
       start_date: start_date,
       isOpenConvo: false,
-    });
-    axios.get("http://localhost:8000/api/conversations/").then((response) => {
+    }).then(axios.get(BASE_URL+CONVERSATIONS).then((response) => {
       const conversations = response.data;
       this.setState({ conversations });
-    });
+    }))
+    
   };
   handleMessageFormSubmit = (event) => {
     event.preventDefault();
-    console.log(event.target);
     const message = event.target.elements.message.value;
     const conversation = this.state.currConvoId;
-    axios.post("http://localhost:8000/api/messages/", {
+    axios.post(BASE_URL+MESSAGES, {
       message: message,
       conversation: conversation,
       isOpenMessage: false,
     });
     axios
-      .get(`http://localhost:8000/api/messages/${conversation}`)
+      .get(BASE_URL+MESSAGES+conversation)
       .then((response) => {
         const messages = response.data;
         this.setState({ messages });
@@ -105,46 +101,49 @@ class App extends React.Component {
 
   handleThoughtFormSubmit = (event) => {
     event.preventDefault();
-    console.log(event.target);
     const thought = event.target.elements.thought.value;
     const message = this.state.currMessageId;
-    axios.post("http://localhost:8000/api/thoughts/", {
+    axios.post(BASE_URL+THOUGHTS, {
       thought: thought,
       message: message,
       isOpenThought: false,
     });
     axios
-      .get(`http://localhost:8000/api/thoughts/${message}`)
+      .get(BASE_URL+THOUGHTS+message)
       .then((response) => {
         const thoughts = response.data;
         this.setState({ thoughts });
       });
   };
   showModal = (e) => {
-    console.log(e.target.id)
-    switch(e.target.id){
-      case 'convo':
+    switch (e.target.id) {
+      case "Conversation":
         this.setState({
           isOpenConvo: true,
         });
         break;
-      case 'message':
+      case "Message":
         this.setState({
           isOpenMessage: true,
         });
         break;
-      case 'thought':
+      case "Thought":
         this.setState({
           isOpenThought: true,
         });
         break;
     }
-  }
-  hideConvoModal = () => {
-    this.setState({
-      isOpenConvo: false,
-    });
   };
+  hideConvoModal = () => {
+    axios.get(BASE_URL+CONVERSATIONS).then((response) => {
+      const conversations = response.data;
+      this.setState({ 
+        conversations: conversations,
+        isOpenConvo: false,
+       });
+    })
+  };
+  
   hideMessageModal = () => {
     this.setState({
       isOpenMessage: false,
@@ -155,7 +154,6 @@ class App extends React.Component {
       isOpenThought: false,
     });
   };
-
 
   updateSearch = (event) => {
     this.setState({
@@ -175,44 +173,43 @@ class App extends React.Component {
         <Container fluid>
           <Row>
             <Col sm={4}>
-              <NewConvo
-                messages={this.state.conversations}
-                showConvoModal={this.showModal}
-              />
+              <NewButton showModal={this.showModal} target={"Conversation"} />
               <Convos
+                conversations={this.state.conversations}
                 filteredConvos={filteredConvos}
                 getConvoDetail={this.getConvoDetail}
               />
             </Col>
             <Col sm={4}>
               {this.state.isMessages && (
-                <NewMessage
-                  activeConvo={this.state.activeConvo}
-                  showMessageModal={this.showModal}
-                  messages={this.state.messages}
-                />
-              )}
-              {this.state.messages.length > 0 && (
                 <div>
+                  <NewButton
+                    showModal={this.showModal}
+                    target={"Message"}
+                    activeConvo={this.state.activeConvo}
+                  />
                   <Messages
                     messages={this.state.messages}
                     getMessageDetail={this.getMessageDetail}
+                    activeConvo={this.state.activeConvo}
                   />
                 </div>
               )}
             </Col>
             <Col sm={4}>
               {this.state.isThoughts && (
-                <NewThought
-                  activeMess={this.state.activeMess}
-                  showThoughtModal={this.showModal}
-                  thoughts={this.state.thoughts}
-                  activeConvo={this.state.activeConvo}
-                />
-              )}
-              {this.state.thoughts.length > 0 && (
                 <div>
-                  <Thoughts thoughts={this.state.thoughts} />
+                  <NewButton
+                    showModal={this.showModal}
+                    target={"Thought"}
+                    activeMess={this.state.activeMess}
+                    activeConvo={this.state.activeConvo}
+                  />
+                  <Thoughts
+                    thoughts={this.state.thoughts}
+                    activeMess={this.state.activeMess}
+                    activeConvo={this.state.activeConvo}
+                  />
                 </div>
               )}
             </Col>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 
-import DatePickerComponent from "./DatePicker";
+import DatePickerComponent from "../utils/DatePicker";
 
 function ConvoModal(props) {
   return (
